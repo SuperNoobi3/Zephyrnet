@@ -7,7 +7,8 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -19,87 +20,158 @@
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
             background: #0a0a0a;
-            color: #ffffff;
-            line-height: 1.6;
+            overflow-x: hidden;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-        
-        /* Navigation Styles */
-        nav {
+        /* Animated Background */
+        .bg-animated {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            z-index: 1000;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%),
+                        linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Glass morphism */
+        .glass {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
-        .nav-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 1.5rem;
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
+        .gradient-text-hero {
+            background: linear-gradient(135deg, #ffffff 0%, #a8edea 50%, #fed6e3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
-        .logo-text h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-        
-        .logo-text p {
-            font-size: 0.75rem;
-            color: #d1d5db;
-        }
-        
-        .nav-links {
-            display: none;
-            gap: 2rem;
-        }
-        
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
+        /* Button styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
             position: relative;
-            padding: 0.5rem 0;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Card hover effects */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card-hover:hover::before {
+            opacity: 1;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Pulsing animation */
+        .pulse-glow {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
+            }
+        }
+        
+        /* Slideshow enhancements */
+        .slideshow-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .slideshow-container img {
+            transition: transform 0.5s ease;
+        }
+        
+        .slideshow-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Navigation improvements */
+        .nav-link {
+            position: relative;
             transition: all 0.3s ease;
         }
         
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -5px;
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             transition: width 0.3s ease;
         }
         
@@ -107,755 +179,365 @@
             width: 100%;
         }
         
-        .mobile-menu-btn {
-            display: block;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .mobile-menu {
-            display: none;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-        }
-        
-        .mobile-menu a {
-            display: block;
-            padding: 0.75rem 1.5rem;
-            color: white;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-        
-        .mobile-menu a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        @media (min-width: 768px) {
-            .nav-links {
-                display: flex;
-            }
-            .mobile-menu-btn {
-                display: none;
-            }
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding-top: 5rem;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
+        /* Floating particles */
+        .particles {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        .hero-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            align-items: center;
-            position: relative;
-            z-index: 10;
-        }
-        
-        @media (min-width: 1024px) {
-            .hero-content {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        
-        .hero-text {
-            text-align: center;
-        }
-        
-        @media (min-width: 1024px) {
-            .hero-text {
-                text-align: left;
-            }
-        }
-        
-        .hero-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .hero-title {
-            font-size: 3rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-        }
-        
-        .text-gradient {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        @media (min-width: 1024px) {
-            .hero-title {
-                font-size: 4.5rem;
-            }
-        }
-        
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: #d1d5db;
-            margin-bottom: 2rem;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        @media (min-width: 640px) {
-            .hero-buttons {
-                flex-direction: row;
-            }
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 9999px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.125rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-        }
-        
-        .btn-secondary {
-            padding: 1rem 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 9999px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.125rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Hero Image */
-        .hero-image {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-        }
-        
-        .hero-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
-            z-index: 1;
-        }
-        
-        .slides {
-            position: relative;
-        }
-        
-        .slides img {
             width: 100%;
-            height: 400px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
         }
         
-        .slide-btn {
+        .particle {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            color: white;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.25rem;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-        
-        .slide-btn:hover {
+            width: 4px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float-particle 20s infinite linear;
         }
         
-        .slide-btn.prev {
-            left: 1rem;
-        }
-        
-        .slide-btn.next {
-            right: 1rem;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        /* Stats Section */
-        .stats {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .stats-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .stats-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(59, 130, 246, 0.5);
-        }
-        
-        .stats-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stats-label {
-            color: #d1d5db;
-        }
-        
-        /* About Section */
-        .about {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-        
-        .section-subtitle {
-            font-size: 1.25rem;
-            color: #d1d5db;
-            max-width: 48rem;
-            margin: 0 auto;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: #3b82f6;
-        }
-        
-        .feature-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        
-        .feature-description {
-            color: #d1d5db;
-        }
-        
-        /* Services Section */
-        .services {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-        }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-        
-        .service-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
-        }
-        
-        .service-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: #3b82f6;
-            transition: transform 0.3s ease;
-        }
-        
-        .service-card:hover .service-icon {
-            transform: scale(1.1);
-        }
-        
-        .service-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        
-        .service-description {
-            color: #d1d5db;
-        }
-        
-        /* Contact Section */
-        .contact {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-        }
-        
-        .contact-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-        }
-        
-        @media (min-width: 1024px) {
-            .contact-content {
-                grid-template-columns: 1fr 1fr;
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
             }
         }
         
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .form-label {
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
+        /* Form improvements */
         .form-input {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
             color: white;
-            font-size: 1rem;
             transition: all 0.3s ease;
         }
         
         .form-input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
         }
         
         .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.6);
         }
         
-        .form-textarea {
-            min-height: 120px;
-            resize: vertical;
+        /* Text color for dark theme */
+        .text-light {
+            color: #e2e8f0;
         }
         
-        .form-submit {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-size: 1.125rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        .text-muted {
+            color: #94a3b8;
         }
         
-        .form-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        /* Section backgrounds */
+        .section-bg {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
         }
         
-        .contact-info {
+        .section-bg-alt {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 2rem;
-        }
-        
-        .contact-item {
-            margin-bottom: 2rem;
-        }
-        
-        .contact-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .contact-item-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .contact-item-title i {
-            color: #3b82f6;
-        }
-        
-        .contact-item-content {
-            color: #d1d5db;
-            line-height: 1.6;
-        }
-        
-        .business-hours {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Footer */
-        .footer {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            padding: 3rem 0;
-            text-align: center;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .footer-logo-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        
-        .footer-logo-text h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-        
-        .footer-logo-text p {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .footer-copyright {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer-tagline {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.875rem;
-        }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 640px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .container {
-                padding: 0 1rem;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="bg-animated"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
+    </div>
+
     <!-- Navigation -->
-    <nav>
-        <div class="container">
-            <div class="nav-container">
-                <div class="logo">
-                    <div class="logo-icon">Z</div>
-                    <div class="logo-text">
-                        <h1>ZephyrNet</h1>
-                        <p>Back Office Solutions</p>
-                    </div>
+    <nav class="fixed w-full z-50 glass-dark">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="pulse-glow rounded-full">
+                    <img 
+                        src="https://i.ibb.co/NCr5h1n/zephyrnet-logo.jpg" 
+                        alt="ZephyrNet Logo" 
+                        class="h-16 w-auto rounded-full"
+                    >
                 </div>
-                <div class="nav-links">
-                    <a href="#home" class="nav-link">Home</a>
-                    <a href="#about" class="nav-link">About</a>
-                    <a href="#services" class="nav-link">Services</a>
-                    <a href="#contact" class="nav-link">Contact</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-white hover:text-purple-300 font-medium">Home</a>
+                    <a href="#about" class="nav-link text-white hover:text-purple-300 font-medium">About</a>
+                    <a href="#services" class="nav-link text-white hover:text-purple-300 font-medium">Services</a>
+                    <a href="#contact" class="nav-link text-white hover:text-purple-300 font-medium">Contact</a>
                 </div>
-                <button class="mobile-menu-btn" onclick="toggleMenu()">
-                    <i class="bi bi-list"></i>
+                <button class="md:hidden text-white" onclick="toggleMenu()">
+                    <i class="bi bi-list text-2xl"></i>
                 </button>
             </div>
         </div>
-        <div id="mobile-menu" class="mobile-menu hidden">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-dark">
+            <a href="#home" class="block py-3 px-6 text-white hover:bg-purple-500 hover:bg-opacity-20">Home</a>
+            <a href="#about" class="block py-3 px-6 text-white hover:bg-purple-500 hover:bg-opacity-20">About</a>
+            <a href="#services" class="block py-3 px-6 text-white hover:bg-purple-500 hover:bg-opacity-20">Services</a>
+            <a href="#contact" class="block py-3 px-6 text-white hover:bg-purple-500 hover:bg-opacity-20">Contact</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text" data-aos="fade-right">
-                    <div class="hero-badge">
-                        🚀 Professional Back Office Solutions
+    <section id="home" class="min-h-screen flex items-center pt-20 relative">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2" data-aos="fade-right">
+                    <h1 class="text-5xl md:text-7xl font-black gradient-text-hero mb-8 leading-tight">Transform Your Back Office Operations</h1>
+                    <p class="text-xl text-light mb-12 leading-relaxed">Streamline your business processes with our comprehensive back-office solutions</p>
+                    <a href="#contact" class="btn-primary text-white px-10 py-4 rounded-full text-lg font-semibold inline-block">Get Started</a>
+                </div>
+                <div class="md:w-1/2 mt-16 md:mt-0" data-aos="fade-left">
+                    <!-- Slideshow -->
+                    <div class="relative slideshow-container">
+                        <div class="overflow-hidden">
+                            <div class="slides">
+                                <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0" alt="Office 1" class="w-full h-96 object-cover">
+                                <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2" alt="Office 2" class="w-full h-96 object-cover hidden">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f" alt="Office 3" class="w-full h-96 object-cover hidden">
+                            </div>
+                        </div>
+                        <!-- Navigation Buttons -->
+                        <button class="absolute top-1/2 left-4 transform -translate-y-1/2 glass p-3 rounded-full text-white hover:bg-purple-500 hover:bg-opacity-30 transition" id="prevSlide">
+                            &#8249;
+                        </button>
+                        <button class="absolute top-1/2 right-4 transform -translate-y-1/2 glass p-3 rounded-full text-white hover:bg-purple-500 hover:bg-opacity-30 transition" id="nextSlide">
+                            &#8250;
+                        </button>
                     </div>
-                    <h1 class="hero-title">
-                        Transform Your 
-                        <span class="text-gradient">Business</span>
-                        Operations
-                    </h1>
-                    <p class="hero-subtitle">
-                        Streamline your back-office processes with our comprehensive, innovative solutions designed to accelerate your business growth.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#contact" class="btn-primary">
-                            Get Started
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                        <a href="#services" class="btn-secondary">
-                            Learn More
-                        </a>
-                    </div>
-                </div>
-                <div class="hero-image" data-aos="fade-left">
-                    <div class="slides">
-                        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Modern Office">
-                        <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Team Collaboration" class="hidden">
-                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Business Meeting" class="hidden">
-                    </div>
-                    <button class="slide-btn prev" id="prevSlide">
-                        <i class="bi bi-chevron-left"></i>
-                    </button>
-                    <button class="slide-btn next" id="nextSlide">
-                        <i class="bi bi-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stats-card" data-aos="fade-up">
-                    <div class="stats-number text-gradient">500+</div>
-                    <div class="stats-label">Happy Clients</div>
-                </div>
-                <div class="stats-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="stats-number text-gradient">24/7</div>
-                    <div class="stats-label">Support</div>
-                </div>
-                <div class="stats-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="stats-number text-gradient">99.9%</div>
-                    <div class="stats-label">Uptime</div>
-                </div>
-                <div class="stats-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="stats-number text-gradient">5+</div>
-                    <div class="stats-label">Years Experience</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">
-                    Why Choose <span class="text-gradient">ZephyrNet</span>?
-                </h2>
-                <p class="section-subtitle">
-                    We combine cutting-edge technology with deep industry expertise to deliver solutions that not only meet your current needs but anticipate future challenges.
-                </p>
+    <section id="about" class="py-32 section-bg">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20" data-aos="fade-up">
+                <h2 class="text-4xl font-bold gradient-text mb-6">About Us</h2>
+                <p class="text-muted max-w-2xl mx-auto text-lg">ZephyrNet is your trusted partner in optimizing back-office operations. We combine expertise with innovation to deliver solutions that drive business growth.</p>
             </div>
-            <div class="features-grid">
-                <div class="feature-card" data-aos="fade-up">
-                    <div class="feature-icon">
-                        <i class="bi bi-award"></i>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass card-hover p-8 rounded-2xl" data-aos="flip-left">
+                    <div class="bg-gradient-to-br from-purple-500 to-pink-500 p-4 rounded-xl w-fit mb-6">
+                        <i class="bi bi-trophy text-4xl text-white"></i>
                     </div>
-                    <h3 class="feature-title">Excellence</h3>
-                    <p class="feature-description">Committed to delivering outstanding results that exceed expectations and drive measurable business growth.</p>
+                    <h3 class="text-2xl font-bold text-white mb-4">Excellence</h3>
+                    <p class="text-muted">Committed to delivering outstanding results</p>
                 </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-icon">
-                        <i class="bi bi-lightbulb"></i>
+                <div class="glass card-hover p-8 rounded-2xl" data-aos="flip-left" data-aos-delay="100">
+                    <div class="bg-gradient-to-br from-blue-500 to-cyan-500 p-4 rounded-xl w-fit mb-6">
+                        <i class="bi bi-lightbulb text-4xl text-white"></i>
                     </div>
-                    <h3 class="feature-title">Innovation</h3>
-                    <p class="feature-description">Leveraging the latest technologies and methodologies to keep your business ahead of the competition.</p>
+                    <h3 class="text-2xl font-bold text-white mb-4">Innovation</h3>
+                    <p class="text-muted">Leveraging cutting-edge technologies</p>
                 </div>
-                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon">
-                        <i class="bi bi-shield-check"></i>
+                <div class="glass card-hover p-8 rounded-2xl" data-aos="flip-left" data-aos-delay="200">
+                    <div class="bg-gradient-to-br from-green-500 to-teal-500 p-4 rounded-xl w-fit mb-6">
+                        <i class="bi bi-people text-4xl text-white"></i>
                     </div>
-                    <h3 class="feature-title">Reliability</h3>
-                    <p class="feature-description">Building lasting partnerships through consistent, dependable service and unwavering support.</p>
+                    <h3 class="text-2xl font-bold text-white mb-4">Partnership</h3>
+                    <p class="text-muted">Building lasting relationships</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Our <span class="text-gradient">Services</span></h2>
-                <p class="section-subtitle">
-                    Comprehensive back-office solutions designed to streamline your operations and boost productivity.
-                </p>
+    <section id="services" class="py-32 section-bg-alt">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center gradient-text mb-20" data-aos="fade-up">Our Services</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="glass card-hover p-8 rounded-2xl" data-aos="zoom-in">
+                    <div class="bg-gradient-to-br from-orange-500 to-red-500 p-4 rounded-xl w-fit mb-6">
+                        <i class="bi bi-calculator text-4xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Accounting</h3>
+                    <p class="text-muted">Comprehensive accounting and bookkeeping services</p>
+                </div>
+                <div class="glass card-hover p-8 rounded-2xl" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-500 p-4 rounded-xl w-fit mb-6">
+                        <i class="bi bi-pencil-square text-4xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Administrative Support</h3>
+                    <p class="text-muted">Efficient administrative and clerical assistance</p>
+                </div>
+                <div class="glass card-hover p-8 rounded-2xl" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="bg-gradient-to-br from-green-500 to-blue-500 p-4 rounded-xl w-fit mb-6">
+                        <i class="bi bi-headset text-4xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Call Center</h3>
+                    <p class="text-muted">24/7 customer support and call center operations</p>
+                </div>
+                <div class="glass card-hover p-8 rounded-2xl" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="bg-gradient-to-br from-pink-500 to-rose-500 p-4 rounded-xl w-fit mb-6">
+                        <i class="bi bi-laptop text-4xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">IT Solutions</h3>
+                    <p class="text-muted">Custom IT solutions and technical support</p>
+                </div>
             </div>
-            <div class="services-grid">
-                <div class="service-card" data-aos="zoom-in">
-                    <div class="service-icon">
-                        <i class="bi bi-calculator"></i>
-                    </div>
-                    <h3 class="service-title">Accounting</h3>
-                    <p class="service-description">Comprehensive accounting and bookkeeping services with real-time reporting and analysis.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 section-bg">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center gradient-text mb-20" data-aos="fade-up">Contact Us</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div data-aos="fade-right">
+                    <!-- Formspree Form -->
+                    <form 
+                      action="https://formspree.io/f/mvgoekjn" 
+                      method="POST" 
+                      class="space-y-6 glass p-8 rounded-2xl">
+                        <div>
+                            <label class="block text-white mb-3 font-medium">Your Name</label>
+                            <input type="name" name="name" class="w-full px-6 py-4 rounded-xl form-input focus:outline-none" required>
+                        </div>
+                        <div>
+                            <label class="block text-white mb-3 font-medium">Your Email</label>
+                            <input type="email" name="email" class="w-full px-6 py-4 rounded-xl form-input focus:outline-none" required>
+                        </div>
+                        <div>
+                            <label class="block text-white mb-3 font-medium">Your Message</label>
+                            <textarea name="message" class="w-full px-6 py-4 rounded-xl form-input focus:outline-none resize-none" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary text-white px-8 py-4 rounded-xl font-semibold w-full">Send Message</button>
+                    </form>
                 </div>
-                <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="service-icon">
-                        <i class="bi bi-person-workspace"></i>
+                <div data-aos="fade-left">
+                    <div class="space-y-8">
+                        <div class="glass p-8 rounded-2xl">
+                            <h3 class="text-2xl font-bold text-white mb-6">Address</h3>
+                            <p class="text-muted text-lg leading-relaxed">302, 3rd Floor, Baleshwar Avenue, Bodakdev,<br>
+                            Ahmedabad, Gujarat 380054</p>
+                        </div>
+                        <div class="glass p-8 rounded-2xl">
+                            <h3 class="text-2xl font-bold text-white mb-6">Contact Info</h3>
+                            <p class="text-muted text-lg">Email: info@zephyrnet.in<br>
+                            <p class="text-muted text-lg">Phone: +919920999947<br>
+                        </div>
                     </div>
-                    <h3 class="service-title">Administrative Support</h3>
-                    <p class="service-description">Efficient administrative and clerical assistance to keep your business running smoothly.</p>
                 </div>
-                <div class="service-
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="glass-dark text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-muted text-lg">© 2025 ZephyrNet. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1200,
+            once: true,
+            easing: 'ease-out-cubic'
+        });
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                const menu = document.getElementById('mobile-menu');
+                if (!menu.classList.contains('hidden')) {
+                    menu.classList.add('hidden');
+                }
+            });
+        });
+
+        // Slideshow functionality
+        const slides = document.querySelectorAll(".slides img");
+        let currentSlide = 0;
+
+        const showSlide = (index) => {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle("hidden", i !== index);
+            });
+        };
+
+        document.getElementById("prevSlide").addEventListener("click", () => {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        });
+
+        document.getElementById("nextSlide").addEventListener("click", () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        });
+
+        // Auto-slide every 5 seconds
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 5000);
+
+        // Initialize the slideshow
+        showSlide(currentSlide);
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('#home');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Add glowing effect to cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.boxShadow = '0 0 30px rgba(102, 126, 234, 0.3)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
